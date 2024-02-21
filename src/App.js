@@ -1,23 +1,51 @@
-import logo from './logo.svg';
+import { useState } from 'react';
 import './App.css';
+import Card from './Components/UI/Card';
+import Form from './Components/UI/Form/Form';
+import User from './Components/UI/User/User';
+import Modal from './Components/UI/Modal/Modal';
 
 function App() {
+  const [userlist, setUserlist] = useState([]);
+  const [modalText, setModalText] = useState('');
+  
+  const addUserHandler = (newUser)=>{
+    const userData = {...newUser, id:Math.round((Math.random()*10000)).toString()};
+    setUserlist((olduserlist)=>{
+      return [...olduserlist, userData];
+    })
+  }
+  const submitErrorHandler = (errorCode) =>{
+      if(errorCode === 0){
+        setModalText(()=>{
+          return 'Please enter a valid name and age (non-empty values).';
+        })
+      }
+      else if(errorCode === 1){
+        setModalText(()=>{
+          return 'Please enter a valid age (>0).';
+        })
+      }
+  }
+  const closeModalHandler = () => {
+    setModalText(()=>'');
+  }
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+        <Card>
+            <Form onAddUser={addUserHandler} onSubmitError={submitErrorHandler}></Form>
+        </Card>
+        {
+          userlist.length===0 ? '' : 
+            <Card flexStyling={true}>
+              { 
+                userlist.map(user => (
+                    <User userdata={user}></User>
+                ))
+              }
+            </Card>
+        }
+        <Modal onCloseModal={closeModalHandler}>{modalText}</Modal>
     </div>
   );
 }
