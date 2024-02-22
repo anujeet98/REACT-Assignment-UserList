@@ -40,7 +40,7 @@ function App() {
             <Card flexStyling={true}>
               { 
                 userlist.map(user => (
-                    <User userdata={user}></User>
+                    <User userdata={user} key={user.id}></User>
                 ))
               }
             </Card>
