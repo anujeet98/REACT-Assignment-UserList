@@ -18,7 +18,7 @@ function App() {
   const submitErrorHandler = (errorCode) =>{
       if(errorCode === 0){
         setModalText(()=>{
-          return 'Please enter a valid name and age (non-empty values).';
+          return 'Please enter a valid name, age and college name (non-empty values).';
         })
       }
       else if(errorCode === 1){
